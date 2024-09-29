@@ -76,10 +76,9 @@ public class BinaryToJsonConverterTest {
         return buffer.array();
     }
 
-
     @Test
     public void testMain() throws IOException {
-        String filePath = "test.bin";
+        String filePath = "src/main/resources/data/sku.dat";
         // Create a temporary binary file for testing
         try (FileWriter fileWriter = new FileWriter(filePath);
              BufferedWriter writer = new BufferedWriter(fileWriter)) {
