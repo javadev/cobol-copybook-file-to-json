@@ -56,7 +56,9 @@ public class BinaryToJsonConverter {
         try (BufferedInputStream inputStream =
                         new BufferedInputStream(new FileInputStream(filePath));
                 BufferedWriter writer = new BufferedWriter(new FileWriter(jsonOutputPath))) {
+            writer.write("["); // Start the JSON array
             parseBinaryFile(inputStream, writer);
+            writer.write("]"); // End the JSON array
             System.out.println("JSON file created successfully: " + jsonOutputPath);
         }
     }
@@ -65,12 +67,17 @@ public class BinaryToJsonConverter {
             throws IOException {
         byte[] buffer = new byte[300];
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        boolean first = true;
 
         while (inputStream.read(buffer) != -1) {
             ByteBuffer byteBuffer = ByteBuffer.wrap(buffer);
             while (byteBuffer.remaining() >= 300) {
-                Layout layout = new Layout();
+                if (!first) {
+                    writer.write(","); // Add comma for subsequent objects
+                }
+                first = false;
 
+                Layout layout = new Layout();
                 layout.extractDate = byteBuffer.getInt();
                 layout.extractTime = byteBuffer.getInt();
                 layout.item = readFixedString(byteBuffer, 7);
@@ -110,7 +117,6 @@ public class BinaryToJsonConverter {
                 // Convert to JSON and write to file
                 String json = gson.toJson(layout);
                 writer.write(json);
-                writer.newLine(); // Write each JSON object on a new line
             }
         }
     }

@@ -10,6 +10,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import org.junit.jupiter.api.Test;
 
 public class BinaryToJsonConverterTest {
@@ -24,15 +26,13 @@ public class BinaryToJsonConverterTest {
     @Test
     void testParseBinaryFile() throws IOException {
         byte[] data = createTestData();
+        String generatedJson = "output_test.json";
         try (BufferedInputStream inputStream =
                         new BufferedInputStream(new ByteArrayInputStream(data));
-                BufferedWriter writer = new BufferedWriter(new FileWriter("output_test.json"))) {
+                BufferedWriter writer = new BufferedWriter(new FileWriter(generatedJson))) {
             BinaryToJsonConverter.parseBinaryFile(inputStream, writer);
         }
-
-        // Verify that the JSON file is created correctly
-        // (this could be enhanced to read the output file and assert its contents)
-        // verify(writer, atLeastOnce()).write(anyString());
+        Files.deleteIfExists(Path.of(generatedJson));
     }
 
     private byte[] createTestData() {
@@ -91,9 +91,5 @@ public class BinaryToJsonConverterTest {
         // Verify if the JSON file is created (you can check file existence)
         File jsonFile = new File("output.json");
         assertTrue(jsonFile.exists());
-
-        // Clean up
-        jsonFile.delete();
-        new File(filePath).delete();
     }
 }
