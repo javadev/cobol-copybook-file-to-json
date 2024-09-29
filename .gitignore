@@ -1,2 +1,4 @@
 /dependency-reduced-pom.xml
 /output_test.json
+/target/
+/.idea/

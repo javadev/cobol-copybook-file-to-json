@@ -51,7 +51,7 @@ public class BinaryToJsonConverter {
     }
 
     public static void main(String[] args) throws IOException {
-        String filePath = "binaryfile.bin";
+        String filePath = "src/main/resources/data/sku.dat";
         String jsonOutputPath = "output.json";
 
         try (BufferedInputStream inputStream = new BufferedInputStream(new FileInputStream(filePath));
