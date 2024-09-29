@@ -2,7 +2,6 @@ package com.github.binarytojson;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
@@ -54,14 +53,16 @@ public class BinaryToJsonConverter {
         String filePath = "src/main/resources/data/sku.dat";
         String jsonOutputPath = "output.json";
 
-        try (BufferedInputStream inputStream = new BufferedInputStream(new FileInputStream(filePath));
-             BufferedWriter writer = new BufferedWriter(new FileWriter(jsonOutputPath))) {
+        try (BufferedInputStream inputStream =
+                        new BufferedInputStream(new FileInputStream(filePath));
+                BufferedWriter writer = new BufferedWriter(new FileWriter(jsonOutputPath))) {
             parseBinaryFile(inputStream, writer);
             System.out.println("JSON file created successfully: " + jsonOutputPath);
         }
     }
 
-    static void parseBinaryFile(BufferedInputStream inputStream, BufferedWriter writer) throws IOException {
+    static void parseBinaryFile(BufferedInputStream inputStream, BufferedWriter writer)
+            throws IOException {
         byte[] buffer = new byte[300];
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
 

@@ -1,6 +1,6 @@
 package com.github.binarytojson;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedWriter;
@@ -10,8 +10,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Test;
 
 public class BinaryToJsonConverterTest {
 
@@ -25,8 +24,9 @@ public class BinaryToJsonConverterTest {
     @Test
     void testParseBinaryFile() throws IOException {
         byte[] data = createTestData();
-        try (BufferedInputStream inputStream = new BufferedInputStream(new ByteArrayInputStream(data));
-             BufferedWriter writer = new BufferedWriter(new FileWriter("output_test.json"))) {
+        try (BufferedInputStream inputStream =
+                        new BufferedInputStream(new ByteArrayInputStream(data));
+                BufferedWriter writer = new BufferedWriter(new FileWriter("output_test.json"))) {
             BinaryToJsonConverter.parseBinaryFile(inputStream, writer);
         }
 
@@ -81,13 +81,13 @@ public class BinaryToJsonConverterTest {
         String filePath = "src/main/resources/data/sku.dat";
         // Create a temporary binary file for testing
         try (FileWriter fileWriter = new FileWriter(filePath);
-             BufferedWriter writer = new BufferedWriter(fileWriter)) {
+                BufferedWriter writer = new BufferedWriter(fileWriter)) {
             writer.write("test binary data");
         }
 
         // Mock the BufferedWriter and invoke the main method
-        BinaryToJsonConverter.main(new String[]{filePath});
-        
+        BinaryToJsonConverter.main(new String[] {filePath});
+
         // Verify if the JSON file is created (you can check file existence)
         File jsonFile = new File("output.json");
         assertTrue(jsonFile.exists());
