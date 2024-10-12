@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
@@ -73,7 +74,8 @@ class LayoutReaderTest {
         String fileContent = "DCL RECORD\nline 1\n/* comment */\nDCL RECORD 2\nline 2";
 
         // Mock file reading
-        Files.write(Paths.get(fileName), fileContent.getBytes());
+        Path fileNamePath = Paths.get(fileName);
+        Files.write(fileNamePath, fileContent.getBytes());
 
         // Execute method
         List<HeaderRecordDto> result = layoutReader.readAllLinesFromFile(fileName);
@@ -83,6 +85,6 @@ class LayoutReaderTest {
         assertFalse(result.isEmpty());
 
         // Clean up
-        Files.delete(Paths.get(fileName));
+        Files.delete(fileNamePath);
     }
 }
