@@ -2,12 +2,12 @@ package com.github.binarytojson.reader.type;
 
 import com.github.binarytojson.type.PrimitiveType;
 
+import static com.github.binarytojson.utils.Constants.MASK_FOR_DEFINE_BYTE;
+
 /**
  * The BitReader class is responsible for reading bits from a list of bytes based on a specified PrimitiveType.
  */
 public class BitReader implements TypeReader {
-    private static final int MASK_FOR_DEFINE_BYTE = 0xFF;
-
     /**
      * Reads and extracts the binary value from a list of bytes based on the provided PrimitiveType.
      *

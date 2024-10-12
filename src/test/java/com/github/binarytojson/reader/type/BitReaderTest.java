@@ -1,6 +1,7 @@
 package com.github.binarytojson.reader.type;
 
 import com.github.binarytojson.type.PrimitiveType;
+
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

@@ -8,6 +8,7 @@ import com.github.binarytojson.type.HeaderRecordDto;
 import com.github.binarytojson.type.HeaderRecordType;
 import com.github.binarytojson.type.PrimitiveType;
 import com.github.binarytojson.writer.Writer;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -54,7 +55,7 @@ class EbcdicToAsciiConvertorTest {
         primitiveTypes.add(PrimitiveType.builder().name("SEGNAME").dataType(DataType.CHAR).level(1).length(8).build());
         headers.add(HeaderRecordDto.builder().primitiveTypes(primitiveTypes).build());
 
-        InputStream inputStream = new ByteArrayInputStream(new byte[] {0x01, 0x02, 0x03, 0x04});
+        InputStream inputStream = new ByteArrayInputStream(new byte[]{0x01, 0x02, 0x03, 0x04});
         OutputStream outputStream = new ByteArrayOutputStream();
 
         when(reader.readBinaryFile(any())).thenReturn(mock(Iterable.class));
@@ -104,7 +105,7 @@ class EbcdicToAsciiConvertorTest {
     void testUpdateGroupIndex() {
         Writer mockWriter = mock(Writer.class);
         List<StructureRecord> structureRecords = new ArrayList<>();
-        StructureRecord record = new StructureRecord(new byte[] {0x01, 0x02}, new ArrayList<>());
+        StructureRecord record = new StructureRecord(new byte[]{0x01, 0x02}, new ArrayList<>());
         structureRecords.add(record);
 
         List<HeaderRecordDto> headers = new ArrayList<>();
@@ -130,11 +131,11 @@ class EbcdicToAsciiConvertorTest {
     @Test
     void testConvertToByteArray() {
         List<Map.Entry<byte[], Integer>> byteArrayList = new ArrayList<>();
-        byteArrayList.add(new AbstractMap.SimpleEntry<>(new byte[] {0x01, 0x02}, 2));
+        byteArrayList.add(new AbstractMap.SimpleEntry<>(new byte[]{0x01, 0x02}, 2));
 
         byte[] result = convertor.convertToByteArray(byteArrayList);
 
         // Ensure the byte array is correctly formed
-        assertArrayEquals(new byte[] {0x01, 0x02}, result);
+        assertArrayEquals(new byte[]{0x01, 0x02}, result);
     }
 }

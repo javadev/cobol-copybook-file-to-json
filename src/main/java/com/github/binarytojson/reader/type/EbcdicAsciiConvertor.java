@@ -2,13 +2,14 @@ package com.github.binarytojson.reader.type;
 
 import java.nio.charset.StandardCharsets;
 
+import static com.github.binarytojson.utils.Constants.MASK_FOR_DEFINE_BYTE;
+
 public class EbcdicAsciiConvertor {
 
     private static final int NON_PRINTABLE_CHARACTERS_BELOW_32 = 32;
     private static final int NON_PRINTABLE_CHARACTERS_BEYOND_126 = 126;
     private static final int NON_PRINTABLE_CHARACTERS_BELOW_192 = 192;
     private static final int LENGTH_OF_UNICODE_PREFIX = 5;
-    private static final int MASK_FOR_DEFINE_BYTE = 0xFF;
 
     public String convert(byte[] ebcdicBytes) {
         byte[] bytes = new byte[ebcdicBytes.length];

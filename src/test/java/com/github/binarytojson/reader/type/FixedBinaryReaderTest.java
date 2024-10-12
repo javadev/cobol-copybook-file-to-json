@@ -2,6 +2,7 @@ package com.github.binarytojson.reader.type;
 
 import com.github.binarytojson.exception.UnsupportedTypeException;
 import com.github.binarytojson.type.PrimitiveType;
+
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -82,7 +83,7 @@ class FixedBinaryReaderTest {
         PrimitiveType type = mock(PrimitiveType.class);
 
         when(type.getDigitsCount()).thenReturn(16);
-        int controlLen = reader.readValue(new byte[] {0x01, 0x02}, type).length();
+        int controlLen = reader.readValue(new byte[]{0x01, 0x02}, type).length();
 
         // For 16 bits, control length should be 2 bytes
         // "258" has 3 characters
@@ -95,7 +96,7 @@ class FixedBinaryReaderTest {
         PrimitiveType type = mock(PrimitiveType.class);
 
         when(type.getDigitsCount()).thenReturn(32);
-        String result = reader.readValue(new byte[] {0x00, 0x00, 0x01, 0x00}, type);
+        String result = reader.readValue(new byte[]{0x00, 0x00, 0x01, 0x00}, type);
 
         // 0x00000100 == 256 in decimal
         assertEquals("256", result);
