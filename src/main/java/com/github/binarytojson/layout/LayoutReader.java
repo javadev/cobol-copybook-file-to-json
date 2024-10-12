@@ -35,7 +35,7 @@ public class LayoutReader {
     /**
      * Regular expression pattern for matching comments in a line.
      */
-    private static final String COMMENTS_PATTERN = "/\\*.*?\\*/";
+    private static final String COMMENTS_PATTERN = "/\\*([^*]|(\\*+[^*/]))*\\*+/";
 
     /**
      * Pattern object for matching comments in a line.
@@ -96,14 +96,25 @@ public class LayoutReader {
         }
     }
 
-    private List<String> replaceMultilineComments(String input) {
-        String result = PATTERN_COMMENTS
-                .matcher(input)
-                .replaceAll("/* $0 */");
-        return Arrays.asList(NEW_LINE_PATTERN.split(result));
+    List<String> replaceMultilineComments(String input) {
+        // Regex pattern to find multi-line comments
+        Matcher matcher = PATTERN_COMMENTS.matcher(input);
+        StringBuffer result = new StringBuffer();
+        // Loop through all matches and convert each multi-line comment to a single-line comment
+        while (matcher.find()) {
+            String comment = matcher.group(0);
+            // Remove newlines and extra spaces inside the comment
+            String singleLineComment = comment.replaceAll("[\\n\\r]+", " ")
+                    .replaceAll("/\\*|\\*/", "").trim();
+            // Replace it with a single-line comment
+            matcher.appendReplacement(result, "/* " + singleLineComment + " */");
+        }
+        // Append the remaining part of the content
+        matcher.appendTail(result);
+        return Arrays.asList(NEW_LINE_PATTERN.split(result.toString()));
     }
 
-    private String removeEmptyLines(String input) {
+    String removeEmptyLines(String input) {
         return input.replaceAll("(?m)^\\s*$[\n\r]+", "");
     }
 
@@ -113,7 +124,7 @@ public class LayoutReader {
      * @param line the input line to be normalized
      * @return the normalized line
      */
-    private String normalizeLine(String line) {
+    String normalizeLine(String line) {
         String normalized = line.length() > MAX_LINE_LENGTH ? line.substring(0, MAX_LINE_LENGTH) : line;
         return normalized.replaceAll(COMMENTS_PATTERN, "")
                 .replaceAll(SPACES_PATTERN, " ")
@@ -147,7 +158,7 @@ public class LayoutReader {
         return parts;
     }
 
-    private boolean isHeaderRecord(String line) {
+    boolean isHeaderRecord(String line) {
         return line.matches("^(ROOT|0DCL|DCL|DECLARE)\\b.*$");
     }
 
