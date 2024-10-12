@@ -1,4 +1,4 @@
-﻿DECLARE 01 GRP_LAYOUT,
+﻿DECLARE 01 GRP_LAYOUT FB,
          03 EXTRACT_DATE     FIXED(9),
          03 EXTRACT_TIME     FIXED(7),
          03 ITEM             CHAR(7),
