@@ -33,7 +33,7 @@ public class BinaryToJsonConverter {
         Options options = new Options();
         options.addRequiredOption("l", "layout", true, "Path to the layout file");
         options.addRequiredOption("s", "source", true, "Path to the source binary file");
-        options.addOption("f", "format", true, "Output formats (csv,json; separate with comma)");
+        options.addOption("f", "format", true, "Output formats (csv,json,json_compact; separate with comma)");
         options.addOption("t", "target", true, "Base path for the output files (default: output)");
 
         CommandLineParser parser = new DefaultParser();
@@ -60,12 +60,22 @@ public class BinaryToJsonConverter {
 
         // Process each format
         for (String format : formatList) {
-            if (format.equals("json")) {
-                processFile(sourcePath, baseOutputPath + ".json", headerRecordDtos, GenerationType.JSON);
-            } else if (format.equals("csv")) {
-                processFile(sourcePath, baseOutputPath + ".csv", headerRecordDtos, GenerationType.CSV);
-            } else {
-                log.error("Unsupported format: {}", format);
+            switch (format) {
+                case "json":
+                    processFile(sourcePath, baseOutputPath + ".json",
+                            headerRecordDtos, GenerationType.JSON);
+                    break;
+                case "json_compact":
+                    processFile(sourcePath, baseOutputPath + ".compact.json",
+                            headerRecordDtos, GenerationType.JSON_COMPACT);
+                    break;
+                case "csv":
+                    processFile(sourcePath, baseOutputPath + ".csv",
+                            headerRecordDtos, GenerationType.CSV);
+                    break;
+                default:
+                    log.error("Unsupported format: {}", format);
+                    break;
             }
         }
     }
