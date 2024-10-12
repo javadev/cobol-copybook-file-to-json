@@ -14,8 +14,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,13 +28,13 @@ public class BinaryToJsonConverter {
     private static final LayoutReader layoutReader = new LayoutReader();
     private static final EbcdicToAsciiConvertor ebcdicToAsciiConvertor = new EbcdicToAsciiConvertor();
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         // Set up command line options
         Options options = new Options();
         options.addRequiredOption("l", "layout", true, "Path to the layout file");
         options.addRequiredOption("s", "source", true, "Path to the source binary file");
-        options.addOption("f", "format", true, "Output format (e.g., JSON)");
-        options.addOption("t", "target", true, "Path to the output JSON file (default: output.json)");
+        options.addOption("f", "format", true, "Output formats (csv,json; separate with comma)");
+        options.addOption("t", "target", true, "Base path for the output files (default: output)");
 
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd;
@@ -46,19 +50,34 @@ public class BinaryToJsonConverter {
 
         String layoutFilePath = cmd.getOptionValue("l");
         String sourceFilePath = cmd.getOptionValue("s");
-        // Default to JSON if not provided
-        String outputFormat = cmd.getOptionValue("f", "JSON");
-        // Default output path; can be changed as needed
-        String jsonOutputPath = cmd.getOptionValue("t",
-                outputFormat.equalsIgnoreCase("JSON") ? "output.json" : "output.csv");
+        String outputFormats = cmd.getOptionValue("f", "json").toLowerCase();
+        String baseOutputPath = cmd.getOptionValue("t", "output");
 
+        Set<String> formatList = new LinkedHashSet<>(Arrays.asList(outputFormats.split(",")));
         List<HeaderRecordDto> headerRecordDtos = layoutReader.readAllLinesFromFile(layoutFilePath);
 
-        try (InputStream inputStream = Files.newInputStream(Paths.get(sourceFilePath));
-             OutputStream outputStream = Files.newOutputStream(Paths.get(jsonOutputPath))) {
-            ebcdicToAsciiConvertor.convert(inputStream, outputStream, headerRecordDtos,
-                    GenerationType.valueOf(outputFormat.toUpperCase()), Cache.TEN_MEGABYTES);
-            log.info("{} file created successfully: {}", outputFormat.toUpperCase(), jsonOutputPath);
+        Path sourcePath = Paths.get(sourceFilePath);
+
+        // Process each format
+        for (String format : formatList) {
+            if (format.equals("json")) {
+                processFile(sourcePath, baseOutputPath + ".json", headerRecordDtos, GenerationType.JSON);
+            } else if (format.equals("csv")) {
+                processFile(sourcePath, baseOutputPath + ".csv", headerRecordDtos, GenerationType.CSV);
+            } else {
+                log.error("Unsupported format: {}", format);
+            }
+        }
+    }
+
+    private static void processFile(Path sourcePath, String outputPath,
+                                    List<HeaderRecordDto> headerRecordDtos, GenerationType type) {
+        try (InputStream inputStream = Files.newInputStream(sourcePath);
+             OutputStream outputStream = Files.newOutputStream(Paths.get(outputPath))) {
+            ebcdicToAsciiConvertor.convert(inputStream, outputStream, headerRecordDtos, type, Cache.TEN_MEGABYTES);
+            log.info("{} file created successfully: {}", type.name(), outputPath);
+        } catch (IOException e) {
+            log.error("Error creating {} file: {}", type.name(), e.getMessage());
         }
     }
 }
