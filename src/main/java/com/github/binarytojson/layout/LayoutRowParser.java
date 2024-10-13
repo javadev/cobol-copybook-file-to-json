@@ -20,6 +20,9 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class LayoutRowParser {
+    private static final String DEFAULT_NUMBER = "0";
+    private static final int GROUP_TWO = 2;
+    private static final int REPLACED_PATTERN_PAST_INDEX = 2;
 
     /**
      * Pattern to match the layout row name.
@@ -130,10 +133,20 @@ public class LayoutRowParser {
 
     private PrimitiveType getPrimitiveType(
             DataType typeToCheck, Matcher typeMatcher, String name, int level) {
-        String numbers = typeMatcher.group(1);
-        int digitsCount = DataType.PIC.equals(typeToCheck) ? numbers.length() : Integer.parseInt(numbers);
-        String scaleFactor = (typeMatcher.groupCount() >= 2) && (!"".equals(typeMatcher.group(2))) ?
-                typeMatcher.group(2) : "0";
+        String numericGroup = typeMatcher.groupCount() == 0 ? DEFAULT_NUMBER : typeMatcher.group(1);
+        String scaleFactorGroup = (typeMatcher.groupCount() >= GROUP_TWO)
+                && (!"".equals(typeMatcher.group(GROUP_TWO))) ? typeMatcher.group(GROUP_TWO) : "0";
+        int digitsCount;
+        if (DataType.PIC == typeToCheck) {
+            String numericGroupWithoutBrackets = replaceN9Pattern(numericGroup);
+            digitsCount = numericGroupWithoutBrackets.replace("V", "").length();
+            if (numericGroupWithoutBrackets.contains("V")) {
+                scaleFactorGroup = String.valueOf(numericGroupWithoutBrackets.length()
+                        - numericGroupWithoutBrackets.indexOf('V') - 1);
+            }
+        } else {
+            digitsCount = Integer.parseInt(numericGroup);
+        }
         int len = calculateLength(typeToCheck, digitsCount);
         return PrimitiveType.builder()
                 .name(name)
@@ -142,7 +155,7 @@ public class LayoutRowParser {
                 .dataType(typeToCheck)
                 .digitsCount(digitsCount)
                 .numberOfBits(typeToCheck == DataType.BIT ? digitsCount : 0)
-                .scaleFactor(Integer.parseInt(scaleFactor))
+                .scaleFactor(Integer.parseInt(scaleFactorGroup))
                 .build();
     }
 
@@ -167,5 +180,45 @@ public class LayoutRowParser {
             return digitsCount;
         }
         return 0;
+    }
+
+    String replaceN9Pattern(String input) {
+        StringBuilder builder = new StringBuilder();
+        int i = 0;
+        while (i < input.length()) {
+            if (input.charAt(i) == '(') {
+                int start = i + 1;
+                // Find closing parenthesis and then '9'
+                int end = input.indexOf(')', start);
+                i = replacePattern(input, end, start, builder, i);
+            } else {
+                builder.append(input.charAt(i));
+                i++;
+            }
+        }
+        return builder.toString();
+    }
+
+    private int replacePattern(String input, int end, int start, StringBuilder builder, int i) {
+        if (end != -1 && end + 1 < input.length() && input.charAt(end + 1) == '9') {
+            // Extract the number between parentheses
+            String numberStr = input.substring(start, end);
+            try {
+                int number = Integer.parseInt(numberStr);
+                // Replace (n)9 with 999
+                for (int index = 0; index < Math.max(0, number); index++) {
+                    builder.append("9");
+                }
+            } catch (NumberFormatException e) {
+                // If parsing the number fails, append as is
+                builder.append('(').append(numberStr).append(")9");
+            }
+            // Move index past the replaced pattern
+            i = end + REPLACED_PATTERN_PAST_INDEX;
+        } else {
+            builder.append(input.charAt(i));
+            i++;
+        }
+        return i;
     }
 }

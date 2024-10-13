@@ -25,6 +25,24 @@ public class PicReader implements TypeReader {
      */
     @Override
     public String readValue(byte[] bytes, PrimitiveType type) {
-        return ebcdicAsciiConvertor.convert(bytes);
+        return insertDotAtPosition(ebcdicAsciiConvertor.convert(bytes), type.getScaleFactor());
+    }
+
+    /**
+     * Inserts a dot at the specified position from the end of the input string.
+     *
+     * @param input           the input string to modify
+     * @param positionFromEnd the position from the end where the dot should be inserted
+     * @return the modified string with the dot inserted
+     */
+    String insertDotAtPosition(String input, int positionFromEnd) {
+        // Check for invalid position
+        if (positionFromEnd <= 0 || positionFromEnd > input.length()) {
+            return input;
+        }
+        // Calculate the position from the beginning
+        int positionFromStart = input.length() - positionFromEnd;
+        // Insert the dot at the calculated position
+        return input.substring(0, positionFromStart) + "." + input.substring(positionFromStart);
     }
 }
