@@ -163,14 +163,12 @@ public class LayoutReader {
 
     private List<PrimitiveType> stylization(List<PrimitiveType> primitiveTypes) {
         List<PrimitiveType> results = new ArrayList<>();
-
         List<PrimitiveType> newPrimitiveTypes = copyArrays(primitiveTypes);
         Deque<PrimitiveType> stack = new ArrayDeque<>();
         for (PrimitiveType pt : newPrimitiveTypes) {
             while (!stack.isEmpty() && stack.peek().getLevel() >= pt.getLevel()) {
                 stack.pop();
             }
-
             if (stack.isEmpty()) {
                 results.add(pt);
             } else {
@@ -179,7 +177,6 @@ public class LayoutReader {
                 }
                 stack.peek().getFields().add(pt);
             }
-
             stack.push(pt);
         }
         return results;
