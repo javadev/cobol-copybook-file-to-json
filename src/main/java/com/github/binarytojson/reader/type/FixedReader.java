@@ -26,7 +26,7 @@ public class FixedReader implements TypeReader {
             } else {
                 sb.append(firstDigit);
                 setDecimalPoint(digitsCount, scaleFactor, sb);
-                if (i <= bytes.length - 1) {
+                if (i < bytes.length - 1) {
                     sb.append(secondDigit);
                 }
                 setDecimalPoint(digitsCount, scaleFactor, sb);
