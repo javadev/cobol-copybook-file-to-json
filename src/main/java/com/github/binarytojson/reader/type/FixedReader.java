@@ -25,7 +25,8 @@ public class FixedReader implements TypeReader {
                 sb.insert(0, SIGN_MINUS);
             } else {
                 sb.append(firstDigit);
-                if (i < bytes.length - 1) {
+                setDecimalPoint(digitsCount, scaleFactor, sb);
+                if (i <= bytes.length - 1) {
                     sb.append(secondDigit);
                 }
                 setDecimalPoint(digitsCount, scaleFactor, sb);
@@ -35,7 +36,11 @@ public class FixedReader implements TypeReader {
     }
 
     private static void setDecimalPoint(int digitsCount, int scaleFactor, StringBuilder sb) {
-        if (scaleFactor != 0 && sb.length() == digitsCount - scaleFactor) {
+        if (scaleFactor == 0) {
+            return;
+        }
+        int decimalPointPosition = digitsCount - scaleFactor;
+        if (sb.length() == decimalPointPosition) {
             sb.append(DOT);
         }
     }

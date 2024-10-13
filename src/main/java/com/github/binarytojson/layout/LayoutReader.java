@@ -69,30 +69,29 @@ public class LayoutReader {
 
             List<List<String>> headerRecords = splitByRecord(linesFromFile);
             List<HeaderRecordDto> result = new ArrayList<>();
-            headerRecords.forEach(headerRecord ->
-            {
-                String headerLine = headerRecord.get(0);
-                HeaderRecordType recordType = headerLine.contains(HeaderRecordType.FIXED_FORMAT.getValue()) ?
-                        HeaderRecordType.FIXED_FORMAT
-                        : HeaderRecordType.VARIABLE_FORMAT;
-
-                Matcher matcher = PATTERN_NUMBER.matcher(headerLine);
-                int count = matcher.find() ? Integer.parseInt(matcher.group(1)) : 1;
-
-                List<PrimitiveType> types = stylization(headerRecord.stream()
-                        .map(this::normalizeLine)
-                        .flatMap(line -> layoutRowParser.parseRow(line, isHeaderRecord(line)).stream())
-                        .collect(Collectors.toList()));
-
-                HeaderRecordDto header = new HeaderRecordDto(recordType, types);
-                for (int i = 0; i < count; i++) {
-                    result.add(header);
-                }
-
-            });
+            for (List<String> headerRecord : headerRecords) {
+                processRecord(headerRecord, result);
+            }
             return result;
         } catch (IOException e) {
             throw new ReadConfigurationException("Error reading file", e);
+        }
+    }
+
+    private void processRecord(List<String> headerRecord, List<HeaderRecordDto> result) {
+        String headerLine = headerRecord.get(0);
+        HeaderRecordType recordType = headerLine.contains(HeaderRecordType.FIXED_FORMAT.getValue()) ?
+                HeaderRecordType.FIXED_FORMAT
+                : HeaderRecordType.VARIABLE_FORMAT;
+        Matcher matcher = PATTERN_NUMBER.matcher(headerLine);
+        int count = matcher.find() ? Integer.parseInt(matcher.group(1)) : 1;
+        List<PrimitiveType> types = stylization(headerRecord.stream()
+                .map(this::normalizeLine)
+                .flatMap(line -> layoutRowParser.parseRow(line, isHeaderRecord(line)).stream())
+                .collect(Collectors.toList()));
+        HeaderRecordDto header = new HeaderRecordDto(recordType, types);
+        for (int i = 0; i < count; i++) {
+            result.add(header);
         }
     }
 
