@@ -1,10 +1,11 @@
 package com.github.binarytojson.reader.type;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import com.github.binarytojson.type.PrimitiveType;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import com.github.binarytojson.type.PrimitiveType;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class FixedReaderTest {
 
