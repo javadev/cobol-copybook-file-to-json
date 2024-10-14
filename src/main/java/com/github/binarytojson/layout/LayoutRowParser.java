@@ -135,14 +135,14 @@ public class LayoutRowParser {
             DataType typeToCheck, Matcher typeMatcher, String name, int level) {
         String numericGroup = typeMatcher.groupCount() == 0 ? DEFAULT_NUMBER : typeMatcher.group(1);
         String scaleFactorGroup = (typeMatcher.groupCount() >= GROUP_TWO)
-                && (!"".equals(typeMatcher.group(GROUP_TWO))) ? typeMatcher.group(GROUP_TWO) : "0";
+                                  && (!"".equals(typeMatcher.group(GROUP_TWO))) ? typeMatcher.group(GROUP_TWO) : "0";
         int digitsCount;
         if (DataType.PIC == typeToCheck) {
             String numericGroupWithoutBrackets = replaceN9Pattern(numericGroup);
             digitsCount = numericGroupWithoutBrackets.replace("V", "").length();
             if (numericGroupWithoutBrackets.contains("V")) {
                 scaleFactorGroup = String.valueOf(numericGroupWithoutBrackets.length()
-                        - numericGroupWithoutBrackets.indexOf('V') - 1);
+                                                  - numericGroupWithoutBrackets.indexOf('V') - 1);
             }
         } else {
             digitsCount = Integer.parseInt(numericGroup);

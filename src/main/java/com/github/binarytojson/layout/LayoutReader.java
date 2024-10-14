@@ -35,7 +35,7 @@ public class LayoutReader {
     /**
      * Regular expression pattern for matching comments in a line.
      */
-    private static final String COMMENTS_PATTERN = "/\\*([^*]|(\\*+[^*/]))*\\*+/";
+    private static final String COMMENTS_PATTERN = "/\\*.*?\\*/";
 
     /**
      * Pattern object for matching comments in a line.
@@ -208,7 +208,7 @@ public class LayoutReader {
     private int getIndexElement(List<PrimitiveType> primitiveTypes, PrimitiveType primitiveType, int i) {
         int indexElement = i + 1;
         while (indexElement < primitiveTypes.size()
-                && primitiveTypes.get(indexElement).getLevel() > primitiveType.getLevel()) {
+               && primitiveTypes.get(indexElement).getLevel() > primitiveType.getLevel()) {
             indexElement++;
         }
         return indexElement;
@@ -239,7 +239,7 @@ public class LayoutReader {
                         primitiveType.toBuilder()
                                 .name(primitiveType.getName() + "(" + index + "," + index2 + ")").build());
                 if (index < primitiveType.getArray1()
-                        || index2 < primitiveType.getArray2()) {
+                    || index2 < primitiveType.getArray2()) {
                     for (int index3 = indexFrom; index3 < indexTo; index3++) {
                         newPrimitiveTypes.add(primitiveTypes.get(index3));
                     }

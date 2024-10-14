@@ -17,7 +17,7 @@ public class EbcdicAsciiConvertor {
         for (int el : ebcdicBytes) {
             int symbol = EBCDIC_2_ASCII[el & MASK_FOR_DEFINE_BYTE];
             if (symbol < NON_PRINTABLE_CHARACTERS_BELOW_32
-                    || (symbol > NON_PRINTABLE_CHARACTERS_BEYOND_126
+                || (symbol > NON_PRINTABLE_CHARACTERS_BEYOND_126
                     && symbol < NON_PRINTABLE_CHARACTERS_BELOW_192)) {
                 byte[] newBytes = new byte[bytes.length + LENGTH_OF_UNICODE_PREFIX];
                 System.arraycopy(bytes, 0, newBytes, 0, bytes.length);

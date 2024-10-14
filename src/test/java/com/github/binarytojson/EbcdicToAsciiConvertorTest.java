@@ -37,6 +37,7 @@ import static org.mockito.Mockito.when;
 
 class EbcdicToAsciiConvertorTest {
 
+    private static final String SEGNAME = "SEGNAME";
     private final Writer writer = mock(Writer.class);
     private final BufferedInputStreamReader reader = mock(BufferedInputStreamReader.class);
 
@@ -52,7 +53,7 @@ class EbcdicToAsciiConvertorTest {
     void testConvertSuccess() throws IOException {
         List<HeaderRecordDto> headers = new ArrayList<>();
         List<PrimitiveType> primitiveTypes = new ArrayList<>();
-        primitiveTypes.add(PrimitiveType.builder().name("SEGNAME").dataType(DataType.CHAR).level(1).length(8).build());
+        primitiveTypes.add(PrimitiveType.builder().name(SEGNAME).dataType(DataType.CHAR).level(1).length(8).build());
         headers.add(HeaderRecordDto.builder().primitiveTypes(primitiveTypes).build());
 
         InputStream inputStream = new ByteArrayInputStream(new byte[]{0x01, 0x02, 0x03, 0x04});
@@ -74,7 +75,7 @@ class EbcdicToAsciiConvertorTest {
     void testConvertHandlesIOException() throws IOException {
         List<HeaderRecordDto> headers = new ArrayList<>();
         List<PrimitiveType> primitiveTypes = new ArrayList<>();
-        primitiveTypes.add(PrimitiveType.builder().name("SEGNAME").dataType(DataType.CHAR).level(1).length(8).build());
+        primitiveTypes.add(PrimitiveType.builder().name(SEGNAME).dataType(DataType.CHAR).level(1).length(8).build());
         headers.add(HeaderRecordDto.builder().primitiveTypes(primitiveTypes).build());
 
         InputStream inputStream = mock(InputStream.class);
@@ -90,7 +91,7 @@ class EbcdicToAsciiConvertorTest {
     void testSetFixedLengthIfNeeded() {
         IReader mockReader = mock(IReader.class);
         List<PrimitiveType> primitiveTypes = new ArrayList<>();
-        primitiveTypes.add(PrimitiveType.builder().name("SEGNAME").dataType(DataType.CHAR).level(1).length(8).build());
+        primitiveTypes.add(PrimitiveType.builder().name(SEGNAME).dataType(DataType.CHAR).level(1).length(8).build());
 
         HeaderRecordDto headerRecordDto = HeaderRecordDto.builder()
                 .primitiveTypes(primitiveTypes).recordType(HeaderRecordType.FIXED_FORMAT).build();
@@ -105,8 +106,8 @@ class EbcdicToAsciiConvertorTest {
     void testUpdateGroupIndex() {
         Writer mockWriter = mock(Writer.class);
         List<StructureRecord> structureRecords = new ArrayList<>();
-        StructureRecord record = new StructureRecord(new byte[]{0x01, 0x02}, new ArrayList<>());
-        structureRecords.add(record);
+        StructureRecord structureRecord = new StructureRecord(new byte[]{0x01, 0x02}, new ArrayList<>());
+        structureRecords.add(structureRecord);
 
         List<HeaderRecordDto> headers = new ArrayList<>();
         headers.add(mock(HeaderRecordDto.class));
@@ -121,7 +122,7 @@ class EbcdicToAsciiConvertorTest {
     @Test
     void testCalculateFixedLength() {
         List<PrimitiveType> primitiveTypes = new ArrayList<>();
-        primitiveTypes.add(PrimitiveType.builder().name("SEGNAME").dataType(DataType.CHAR).level(1).length(8).build());
+        primitiveTypes.add(PrimitiveType.builder().name(SEGNAME).dataType(DataType.CHAR).level(1).length(8).build());
 
         int result = convertor.calculateFixedLength(primitiveTypes);
         // Fixed length calculated correctly

@@ -28,6 +28,7 @@ import lombok.extern.slf4j.Slf4j;
  * based on specified data types.
  * It uses a map of data types to type readers for reading values from the byte array.
  */
+@SuppressWarnings("java:S1171")
 @Getter
 @RequiredArgsConstructor
 @Slf4j
@@ -222,7 +223,7 @@ public class StructureRecord {
                 int endIndex = amount.indexOf(')', startIndex);
                 if (startIndex != -1 && endIndex != -1) {
                     type.setAmount(amount.substring(0, startIndex + 1) + index
-                            + amount.substring(endIndex));
+                                   + amount.substring(endIndex));
                 }
             }
         }
