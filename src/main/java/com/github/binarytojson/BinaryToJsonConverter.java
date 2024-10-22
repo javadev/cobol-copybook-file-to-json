@@ -25,6 +25,8 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class BinaryToJsonConverter {
+    private static final String HEADER = "Converts data from a binary file into a readable format such as CSV, JSON, or TXT.";
+    private static final String FOOTER = "\nKindly submit any issues to support.";
     private static final LayoutReader layoutReader = new LayoutReader();
     private static final EbcdicToAsciiConvertor ebcdicToAsciiConvertor = new EbcdicToAsciiConvertor();
 
@@ -44,7 +46,7 @@ public class BinaryToJsonConverter {
         } catch (ParseException e) {
             log.info("Error parsing command line arguments: {}", e.getMessage());
             HelpFormatter formatter = new HelpFormatter();
-            formatter.printHelp("BinaryToJsonConverter", options);
+            formatter.printHelp("java -jar binary-file-to-json-1.0-all.jar", HEADER, options, FOOTER, true);
             return;
         }
 
