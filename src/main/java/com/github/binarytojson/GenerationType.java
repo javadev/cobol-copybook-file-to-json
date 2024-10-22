@@ -5,12 +5,14 @@ import com.github.binarytojson.writer.factory.JsonCompactWriterFactory;
 import com.github.binarytojson.writer.factory.JsonWriterFactory;
 import com.github.binarytojson.writer.factory.WriterFactory;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
  * The GenerationType enum represents different types of data generation formats,
  * along with their corresponding WriterFactory implementations.
  */
+@AllArgsConstructor
 @Getter
 public enum GenerationType {
 
@@ -30,13 +32,4 @@ public enum GenerationType {
     CSV(new CsvWriterFactory());
 
     private final WriterFactory writerFactory;
-
-    /**
-     * Constructs a GenerationType enum with the specified WriterFactory implementation.
-     *
-     * @param writerFactory the WriterFactory implementation associated with this GenerationType
-     */
-    GenerationType(WriterFactory writerFactory) {
-        this.writerFactory = writerFactory;
-    }
 }
