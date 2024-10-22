@@ -9,7 +9,7 @@ import lombok.Getter;
 /**
  * Data Transfer Object representing a header record with information about the data structure.
  */
-@Builder(toBuilder = true)
+@Builder
 @AllArgsConstructor
 @Getter
 public class HeaderRecordDto {
