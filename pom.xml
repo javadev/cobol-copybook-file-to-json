@@ -3,14 +3,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.javadev</groupId>
-    <artifactId>binary-file-to-json</artifactId>
+    <artifactId>cobol-copybook-file-to-json</artifactId>
     <packaging>jar</packaging>
     <version>1.0</version>
     <name>binary-file-to-json</name>
-    <description>Easily convert binary data to JSON format with this lightweight library, simplifying data handling and
+    <description>Easily convert cobol copybook data to JSON format with this lightweight library, simplifying data handling and
         improving interoperability for your applications
     </description>
-    <url>https://github.com/javadev/binary-file-to-json</url>
+    <url>https://github.com/javadev/cobol-copybook-file-to-json</url>
     <developers>
         <developer>
             <name>Valentyn Kolesnikov</name>
@@ -24,20 +24,20 @@
         </license>
     </licenses>
     <scm>
-        <connection>scm:git:git://github.com/javadev/binary-file-to-json.git</connection>
-        <developerConnection>scm:git:git://github.com/javadev/binary-file-to-json.git</developerConnection>
-        <url>https://github.com/javadev/underscore-java</url>
+        <connection>scm:git:git://github.com/javadev/cobol-copybook-file-to-json.git</connection>
+        <developerConnection>scm:git:git://github.com/javadev/cobol-copybook-file-to-json.git</developerConnection>
+        <url>https://github.com/javadev/cobol-copybook-file-to-json</url>
     </scm>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <ciManagement>
         <system>GitHub Actions</system>
-        <url>https://github.com/javadev/binary-file-to-json/actions</url>
+        <url>https://github.com/javadev/cobol-copybook-file-to-json/actions</url>
     </ciManagement>
     <issueManagement>
         <system>GitHub Issues</system>
-        <url>https://github.com/javadev/binary-file-to-json/issues</url>
+        <url>https://github.com/javadev/cobol-copybook-file-to-json/issues</url>
     </issueManagement>
     <build>
         <plugins>
