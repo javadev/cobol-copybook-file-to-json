@@ -1,5 +1,6 @@
 # Cobol Copybook File to JSON Converter
 
+[![Maven Central](https://img.shields.io/maven-central/v/com.github.javadev/cobol-copybook-file-to-json.svg)](https://central.sonatype.com/artifact/com.github.javadev/cobol-copybook-file-to-json/1.0)
 [![Java CI](https://github.com/javadev/cobol-copybook-file-to-json/actions/workflows/maven.yml/badge.svg)](https://github.com/javadev/cobol-copybook-file-to-json/actions/workflows/maven.yml)
 
 ## Description

@@ -5,7 +5,7 @@
     <artifactId>cobol-copybook-file-to-json</artifactId>
     <packaging>jar</packaging>
     <version>1.0</version>
-    <name>binary-file-to-json</name>
+    <name>cobol-copybook-file-to-json</name>
     <description>Easily convert cobol copybook data to JSON format with this lightweight library, simplifying data handling and
         improving interoperability for your applications
     </description>
