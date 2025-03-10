@@ -33,7 +33,7 @@ import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class EbcdicToAsciiConvertorTest {
+public class EbcdicToAsciiConvertorTest {
 
     private static final String SEGNAME = "SEGNAME";
     private final Writer writer = mock(Writer.class);
