@@ -1,6 +1,6 @@
-[![Java CI](https://github.com/javadev/cobol-copybook-file-to-json/actions/workflows/maven.yml/badge.svg)](https://github.com/javadev/cobol-copybook-file-to-json/actions/workflows/maven.yml)
-
 # Cobol Copybook File to JSON Converter
+
+[![Java CI](https://github.com/javadev/cobol-copybook-file-to-json/actions/workflows/maven.yml/badge.svg)](https://github.com/javadev/cobol-copybook-file-to-json/actions/workflows/maven.yml)
 
 ## Description
 Easily convert COBOL copybook data to JSON format with this lightweight library, simplifying data handling and improving interoperability for your applications. Perfect for developers looking to streamline data processing!
@@ -28,5 +28,4 @@ java -jar target/cobol-copybook-file-to-json-1.0-all.jar \
      -f json,csv
 ```
 
-This command converts the COBOL copybook data from `sku.dat` using the layout file `sku.txt` and outputs the results in both JSON and CSV formats to the `sku` directory.
-
+This command converts the COBOL copybook data from `sku.dat` using the layout file `sku.txt` and outputs the results as `sku.json` and `sku.csv`.
