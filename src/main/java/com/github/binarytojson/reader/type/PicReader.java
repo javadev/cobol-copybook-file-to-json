@@ -3,15 +3,14 @@ package com.github.binarytojson.reader.type;
 import com.github.binarytojson.type.PrimitiveType;
 
 /**
- * The PicReader class implements the TypeReader interface to read values from a list of bytes based on a given PrimitiveType.
+ * The PicReader class implements the TypeReader interface to read values from a list of bytes based
+ * on a given PrimitiveType.
  */
 public class PicReader implements TypeReader {
 
     private final EbcdicAsciiConvertor ebcdicAsciiConvertor;
 
-    /**
-     * Constructs a PicReader with an instance of EbcdicAsciiConvertor.
-     */
+    /** Constructs a PicReader with an instance of EbcdicAsciiConvertor. */
     public PicReader() {
         ebcdicAsciiConvertor = new EbcdicAsciiConvertor();
     }
@@ -20,7 +19,7 @@ public class PicReader implements TypeReader {
      * Reads the value from the list of bytes based on the specified PrimitiveType.
      *
      * @param bytes the list of bytes to read from
-     * @param type  the PrimitiveType indicating the type of value to be read
+     * @param type the PrimitiveType indicating the type of value to be read
      * @return a string representing the value read
      */
     @Override
@@ -31,7 +30,7 @@ public class PicReader implements TypeReader {
     /**
      * Inserts a dot at the specified position from the end of the input string.
      *
-     * @param input           the input string to modify
+     * @param input the input string to modify
      * @param positionFromEnd the position from the end where the dot should be inserted
      * @return the modified string with the dot inserted
      */

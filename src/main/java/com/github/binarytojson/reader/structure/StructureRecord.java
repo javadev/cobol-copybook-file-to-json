@@ -10,23 +10,21 @@ import com.github.binarytojson.reader.type.PicReader;
 import com.github.binarytojson.reader.type.TypeReader;
 import com.github.binarytojson.type.DataType;
 import com.github.binarytojson.type.PrimitiveType;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * The StructureRecord class represents a record with a byte array and provides methods to extract data
- * based on specified data types.
- * It uses a map of data types to type readers for reading values from the byte array.
+ * The StructureRecord class represents a record with a byte array and provides methods to extract
+ * data based on specified data types. It uses a map of data types to type readers for reading
+ * values from the byte array.
  */
 @SuppressWarnings("java:S1171")
 @Getter
@@ -36,35 +34,26 @@ public class StructureRecord {
 
     private static final String FILL_1_KEY = "FILL1";
     private static final String FILL_2_KEY = "FILL2";
-    /**
-     * The byte array representing the record.
-     */
+    /** The byte array representing the record. */
     private final byte @NonNull [] bytes;
 
     /**
-     * The list of PrimitiveTypes comes from layout
-     * Can be modified during reading in case of VB
-     * and keyword OCCURS (amount of repeats) in layout
+     * The list of PrimitiveTypes comes from layout Can be modified during reading in case of VB and
+     * keyword OCCURS (amount of repeats) in layout
      */
     private final @NonNull List<PrimitiveType> types;
 
-    /**
-     * The map contains field values
-     */
+    /** The map contains field values */
     private final Map<String, Object> fields = new LinkedHashMap<>();
 
     private int position;
 
-    /**
-     * Resets the current position within the byte array.
-     */
+    /** Resets the current position within the byte array. */
     public void resetPosition() {
         this.position = 0;
     }
 
-    /**
-     * A map that associates each supported data type with its corresponding type reader.
-     */
+    /** A map that associates each supported data type with its corresponding type reader. */
     private final Map<DataType, TypeReader> typeReaderMap = new HashMap<>();
 
     {
@@ -76,7 +65,8 @@ public class StructureRecord {
     }
 
     /**
-     * Retrieves the data of the specified primitive type from the record starting at the specified position.
+     * Retrieves the data of the specified primitive type from the record starting at the specified
+     * position.
      *
      * @param type the primitive type for which data needs to be extracted
      * @param mode the mode indicating whether to include array information
@@ -87,13 +77,12 @@ public class StructureRecord {
     public NameAndValues getData(PrimitiveType type, Mode mode) {
         DataType dt = type.getDataType();
         if (Objects.isNull(dt)) {
-            return NameAndValues.builder()
-                    .name(type.getName())
-                    .build();
+            return NameAndValues.builder().name(type.getName()).build();
         } else if (typeReaderMap.containsKey(dt)) {
             int toPosition = position + type.getLength();
             toPosition = Math.min(toPosition, getLen());
-            String value = typeReaderMap.get(dt).readValue(subArray(bytes, position, toPosition), type);
+            String value =
+                    typeReaderMap.get(dt).readValue(subArray(bytes, position, toPosition), type);
             int arrayIndex = type.getName().indexOf('(');
             String name;
             if (arrayIndex > 0 && mode == Mode.WITH_ARRAY) {
@@ -131,19 +120,21 @@ public class StructureRecord {
     /**
      * Processes a list of PrimitiveType objects recursively.
      *
-     * @param list   the list of PrimitiveType objects to process
+     * @param list the list of PrimitiveType objects to process
      * @param parent the parent PrimitiveType object
-     * @param mode   the mode indicating whether to include array information
+     * @param mode the mode indicating whether to include array information
      * @return a map containing the processed data
      */
-    public Map<String, Object> processList(List<PrimitiveType> list, PrimitiveType parent, Mode mode) {
+    public Map<String, Object> processList(
+            List<PrimitiveType> list, PrimitiveType parent, Mode mode) {
         Map<String, Object> result = new LinkedHashMap<>();
         for (int index = 0; index < list.size(); index++) {
             PrimitiveType type = list.get(index);
             boolean readElement = true;
             if (fieldsNotEmpty(type)) {
                 if (type.getAmount() != null) {
-                    readElement = processAmount(type, getAmountStr(parent, mode, type), list, index);
+                    readElement =
+                            processAmount(type, getAmountStr(parent, mode, type), list, index);
                 }
                 if (readElement) {
                     Map<String, Object> children = processList(type.getFields(), type, mode);
@@ -185,12 +176,13 @@ public class StructureRecord {
     /**
      * Adds children to the result map under the appropriate key.
      *
-     * @param result   the result map
-     * @param type     the parent PrimitiveType object
+     * @param result the result map
+     * @param type the parent PrimitiveType object
      * @param children the children to be added
      */
     @SuppressWarnings({"unchecked", "rawtypes"})
-    private void addChildrenToResult(Map<String, Object> result, PrimitiveType type, Map<String, Object> children) {
+    private void addChildrenToResult(
+            Map<String, Object> result, PrimitiveType type, Map<String, Object> children) {
         if (result.containsKey(type.getName())) {
             Object item = result.get(type.getName());
             if (item instanceof List) {
@@ -210,8 +202,8 @@ public class StructureRecord {
      * Gets the amount string for the given PrimitiveType object.
      *
      * @param parent the parent PrimitiveType object
-     * @param mode   the mode indicating whether to include array information
-     * @param type   the PrimitiveType object
+     * @param mode the mode indicating whether to include array information
+     * @param type the PrimitiveType object
      * @return the amount string
      */
     private String getAmountStr(PrimitiveType parent, Mode mode, PrimitiveType type) {
@@ -222,8 +214,10 @@ public class StructureRecord {
                 int startIndex = amount.indexOf('(');
                 int endIndex = amount.indexOf(')', startIndex);
                 if (startIndex != -1 && endIndex != -1) {
-                    type.setAmount(amount.substring(0, startIndex + 1) + index
-                                   + amount.substring(endIndex));
+                    type.setAmount(
+                            amount.substring(0, startIndex + 1)
+                                    + index
+                                    + amount.substring(endIndex));
                 }
             }
         }
@@ -243,14 +237,14 @@ public class StructureRecord {
     /**
      * Processes the amount for the given PrimitiveType object.
      *
-     * @param type      the PrimitiveType object
+     * @param type the PrimitiveType object
      * @param amountStr the amount string
-     * @param list      the list of PrimitiveType objects
-     * @param index     the index of the current PrimitiveType object
+     * @param list the list of PrimitiveType objects
+     * @param index the index of the current PrimitiveType object
      * @return true if the element should be read, otherwise false
      */
-    private boolean processAmount(PrimitiveType type, String amountStr,
-                                  List<PrimitiveType> list, int index) {
+    private boolean processAmount(
+            PrimitiveType type, String amountStr, List<PrimitiveType> list, int index) {
         int amount = Integer.parseInt(amountStr);
         if (amount == 0) {
             return false;

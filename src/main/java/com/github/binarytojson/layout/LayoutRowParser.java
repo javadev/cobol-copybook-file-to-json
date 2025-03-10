@@ -2,7 +2,6 @@ package com.github.binarytojson.layout;
 
 import com.github.binarytojson.type.DataType;
 import com.github.binarytojson.type.PrimitiveType;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -10,13 +9,12 @@ import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * The LayoutRowParser class is responsible for parsing a line of text representing a row
- * in a data file and extracting relevant information such as level, name, and data type.
+ * The LayoutRowParser class is responsible for parsing a line of text representing a row in a data
+ * file and extracting relevant information such as level, name, and data type.
  */
 @Slf4j
 public class LayoutRowParser {
@@ -24,31 +22,29 @@ public class LayoutRowParser {
     private static final int GROUP_TWO = 2;
     private static final int REPLACED_PATTERN_PAST_INDEX = 2;
 
-    /**
-     * Pattern to match the layout row name.
-     */
-    private static final Pattern NAME_PATTERN = Pattern.compile("(\\d+)\\s+([$\\w#]+)(\\((\\d+)\\))?(\\((\\d+),(\\d+)\\))?");
+    /** Pattern to match the layout row name. */
+    private static final Pattern NAME_PATTERN =
+            Pattern.compile("(\\d+)\\s+([$\\w#]+)(\\((\\d+)\\))?(\\((\\d+),(\\d+)\\))?");
 
-    /**
-     * Pattern to match the occurs (OCCURS:12 or OCCURS:#SNAP)
-     */
+    /** Pattern to match the occurs (OCCURS:12 or OCCURS:#SNAP) */
     private static final Pattern OCCURS_PATTERN = Pattern.compile("OCCURS:(.+?),");
 
-    /**
-     * Pattern to match the root element in layout rows.
-     */
+    /** Pattern to match the root element in layout rows. */
     private static final Pattern ROOT_PATTERN = Pattern.compile("ROOT\\s+(.+?),");
 
-    /**
-     * List of data types to check for parsing.
-     */
-    private static final List<DataType> TYPES_TO_CHECK = Arrays.asList(DataType.BIT, DataType.CHAR,
-            DataType.FIXED, DataType.FIXED_BINARY, DataType.PIC);
+    /** List of data types to check for parsing. */
+    private static final List<DataType> TYPES_TO_CHECK =
+            Arrays.asList(
+                    DataType.BIT,
+                    DataType.CHAR,
+                    DataType.FIXED,
+                    DataType.FIXED_BINARY,
+                    DataType.PIC);
 
     /**
      * Parses the given layout row and extracts primitive types.
      *
-     * @param line         the layout row to parse
+     * @param line the layout row to parse
      * @param headerRecord a boolean indicating whether the row is a header record
      * @return a list of primitive types extracted from the layout row
      */
@@ -61,8 +57,14 @@ public class LayoutRowParser {
             for (DataType typeToCheck : TYPES_TO_CHECK) {
                 // Regular expression pattern for checking different data types
                 for (String alias : typeToCheck.getAliases()) {
-                    List<PrimitiveType> primitiveTypes = getPrimitiveTypes(
-                            line, typeToCheck, alias, result.getQuantity(), result.getName(), result.getLevel());
+                    List<PrimitiveType> primitiveTypes =
+                            getPrimitiveTypes(
+                                    line,
+                                    typeToCheck,
+                                    alias,
+                                    result.getQuantity(),
+                                    result.getName(),
+                                    result.getLevel());
                     if (!primitiveTypes.isEmpty()) {
                         return primitiveTypes;
                     }
@@ -73,18 +75,22 @@ public class LayoutRowParser {
             if (occursMatcher.find()) {
                 amount = occursMatcher.group(1);
             }
-            return Collections.singletonList(PrimitiveType.builder()
-                    .name(result.getName())
-                    .amount(amount)
-                    .level(result.getLevel())
-                    .array1(result.getArray1())
-                    .array2(result.getArray2())
-                    .build());
+            return Collections.singletonList(
+                    PrimitiveType.builder()
+                            .name(result.getName())
+                            .amount(amount)
+                            .level(result.getLevel())
+                            .array1(result.getArray1())
+                            .array2(result.getArray2())
+                            .build());
         } else {
             Matcher rootMatcher = ROOT_PATTERN.matcher(line);
             if (rootMatcher.find()) {
-                return Collections.singletonList(PrimitiveType.builder()
-                        .name(rootMatcher.group(1)).rootElement(true).build());
+                return Collections.singletonList(
+                        PrimitiveType.builder()
+                                .name(rootMatcher.group(1))
+                                .rootElement(true)
+                                .build());
             }
             return Collections.emptyList();
         }
@@ -94,7 +100,8 @@ public class LayoutRowParser {
         int level = Integer.parseInt(nameMatcher.group(1));
         String name = nameMatcher.group(2);
 
-        int quantity = Objects.nonNull(nameMatcher.group(4)) ? Integer.parseInt(nameMatcher.group(4)) : 1;
+        int quantity =
+                Objects.nonNull(nameMatcher.group(4)) ? Integer.parseInt(nameMatcher.group(4)) : 1;
         int array1;
         if (Objects.nonNull(nameMatcher.group(4)) && !headerRecord) {
             array1 = Integer.parseInt(nameMatcher.group(4));
@@ -103,7 +110,8 @@ public class LayoutRowParser {
         } else {
             array1 = 0;
         }
-        int array2 = Objects.nonNull(nameMatcher.group(7)) ? Integer.parseInt(nameMatcher.group(7)) : 0;
+        int array2 =
+                Objects.nonNull(nameMatcher.group(7)) ? Integer.parseInt(nameMatcher.group(7)) : 0;
         return new Result(level, name, quantity, array1, array2);
     }
 
@@ -123,8 +131,12 @@ public class LayoutRowParser {
         if (typeMatcher.find()) {
             List<PrimitiveType> primitiveTypes = new ArrayList<>();
             for (int index = 0; index < quantity; index++) {
-                primitiveTypes.add(getPrimitiveType(typeToCheck, typeMatcher,
-                        quantity > 1 ? String.format("%s(%d)", name, index + 1) : name, level));
+                primitiveTypes.add(
+                        getPrimitiveType(
+                                typeToCheck,
+                                typeMatcher,
+                                quantity > 1 ? String.format("%s(%d)", name, index + 1) : name,
+                                level));
             }
             return primitiveTypes;
         }
@@ -134,15 +146,21 @@ public class LayoutRowParser {
     private PrimitiveType getPrimitiveType(
             DataType typeToCheck, Matcher typeMatcher, String name, int level) {
         String numericGroup = typeMatcher.groupCount() == 0 ? DEFAULT_NUMBER : typeMatcher.group(1);
-        String scaleFactorGroup = (typeMatcher.groupCount() >= GROUP_TWO)
-                                  && (!"".equals(typeMatcher.group(GROUP_TWO))) ? typeMatcher.group(GROUP_TWO) : "0";
+        String scaleFactorGroup =
+                (typeMatcher.groupCount() >= GROUP_TWO)
+                                && (!"".equals(typeMatcher.group(GROUP_TWO)))
+                        ? typeMatcher.group(GROUP_TWO)
+                        : "0";
         int digitsCount;
         if (DataType.PIC == typeToCheck) {
             String numericGroupWithoutBrackets = replaceN9Pattern(numericGroup);
             digitsCount = numericGroupWithoutBrackets.replace("V", "").length();
             if (numericGroupWithoutBrackets.contains("V")) {
-                scaleFactorGroup = String.valueOf(numericGroupWithoutBrackets.length()
-                                                  - numericGroupWithoutBrackets.indexOf('V') - 1);
+                scaleFactorGroup =
+                        String.valueOf(
+                                numericGroupWithoutBrackets.length()
+                                        - numericGroupWithoutBrackets.indexOf('V')
+                                        - 1);
             }
         } else {
             digitsCount = Integer.parseInt(numericGroup);

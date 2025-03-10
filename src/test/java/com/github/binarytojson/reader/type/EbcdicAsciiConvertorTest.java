@@ -1,9 +1,9 @@
 package com.github.binarytojson.reader.type;
 
-import org.junit.jupiter.api.Test;
-
 import static com.github.binarytojson.reader.type.EbcdicAsciiConvertor.EBCDIC_2_ASCII;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.junit.jupiter.api.Test;
 
 class EbcdicAsciiConvertorTest {
 
@@ -67,6 +67,7 @@ class EbcdicAsciiConvertorTest {
                 expected.append((char) i1);
             }
         }
-        assertEquals(expected.toString(), actual, "Conversion of all non-printable characters failed");
+        assertEquals(
+                expected.toString(), actual, "Conversion of all non-printable characters failed");
     }
 }

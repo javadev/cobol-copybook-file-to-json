@@ -1,7 +1,6 @@
 package com.github.binarytojson.writer.factory;
 
 import com.github.binarytojson.writer.Writer;
-
 import java.io.IOException;
 import java.io.OutputStream;
 

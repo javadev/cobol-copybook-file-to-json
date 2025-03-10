@@ -2,12 +2,12 @@ package com.github.binarytojson.writer.factory;
 
 import com.github.binarytojson.writer.JsonWriter;
 import com.github.binarytojson.writer.Writer;
-
 import java.io.IOException;
 import java.io.OutputStream;
 
 /**
- * The JsonWriterFactory class implements the WriterFactory interface to create instances of JsonWriter.
+ * The JsonWriterFactory class implements the WriterFactory interface to create instances of
+ * JsonWriter.
  */
 public class JsonWriterFactory implements WriterFactory {
 

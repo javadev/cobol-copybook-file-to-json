@@ -1,5 +1,7 @@
 package com.github.binarytojson.reader.file;
 
+import static com.github.binarytojson.utils.Constants.HEADER_WITH_RDW_LENGTH;
+
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.EOFException;
@@ -7,15 +9,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
-import static com.github.binarytojson.utils.Constants.HEADER_WITH_RDW_LENGTH;
-
-/**
- * Class for reading binary data from a BufferedInputStream.
- */
+/** Class for reading binary data from a BufferedInputStream. */
 @Slf4j
 public class BufferedInputStreamReader implements IReader {
 
@@ -88,7 +85,8 @@ public class BufferedInputStreamReader implements IReader {
         @Override
         public byte[] next() {
             if (!hasNext()) {
-                throw new NoSuchElementException("Not enough bytes left in the buffer for a complete record");
+                throw new NoSuchElementException(
+                        "Not enough bytes left in the buffer for a complete record");
             }
             if (fixedLength > 0) {
                 byte[] recordData = new byte[fixedLength];
@@ -98,14 +96,15 @@ public class BufferedInputStreamReader implements IReader {
             } else {
                 if (bufferedInputStream.available() >= HEADER_WITH_RDW_LENGTH) {
                     int rdw = readShort(bufferedInputStream);
-                    int recordLength = rdw + readShort(bufferedInputStream) - HEADER_WITH_RDW_LENGTH;
+                    int recordLength =
+                            rdw + readShort(bufferedInputStream) - HEADER_WITH_RDW_LENGTH;
                     byte[] recordData = new byte[recordLength];
                     if (bufferedInputStream.read(recordData) != -1) {
                         return recordData;
                     }
                 }
             }
-            return new byte[]{};
+            return new byte[] {};
         }
 
         /**

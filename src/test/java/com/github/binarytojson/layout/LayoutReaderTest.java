@@ -1,21 +1,19 @@
 package com.github.binarytojson.layout;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.github.binarytojson.type.HeaderRecordDto;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 class LayoutReaderTest {
 
@@ -37,7 +35,8 @@ class LayoutReaderTest {
     @Test
     void testReplaceMultilineComments() {
         String input = "/* This is a comment\nline 1 */\nAnother line /* comment */";
-        List<String> expected = Arrays.asList("/* This is a comment line 1 */", "Another line /* comment */");
+        List<String> expected =
+                Arrays.asList("/* This is a comment line 1 */", "Another line /* comment */");
         List<String> result = layoutReader.replaceMultilineComments(input);
         assertEquals(expected, result);
     }
@@ -59,10 +58,10 @@ class LayoutReaderTest {
     @Test
     void testSplitByRecord() {
         List<String> input = Arrays.asList("DCL HEADER 1", "line 1", "DCL HEADER 2", "line 2");
-        List<List<String>> expected = Arrays.asList(
-                Arrays.asList("DCL HEADER 1", "line 1"),
-                Arrays.asList("DCL HEADER 2", "line 2")
-        );
+        List<List<String>> expected =
+                Arrays.asList(
+                        Arrays.asList("DCL HEADER 1", "line 1"),
+                        Arrays.asList("DCL HEADER 2", "line 2"));
         List<List<String>> result = layoutReader.splitByRecord(input);
         assertEquals(expected, result);
     }

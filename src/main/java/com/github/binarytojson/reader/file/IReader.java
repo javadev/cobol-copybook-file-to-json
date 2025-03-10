@@ -1,8 +1,6 @@
 package com.github.binarytojson.reader.file;
 
-/**
- * Interface for Reader with fixed/not fixed length functionality
- */
+/** Interface for Reader with fixed/not fixed length functionality */
 public interface IReader {
 
     /**

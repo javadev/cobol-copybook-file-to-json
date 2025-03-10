@@ -1,14 +1,13 @@
 package com.github.binarytojson.reader.type;
 
-import com.github.binarytojson.exception.UnsupportedTypeException;
-import com.github.binarytojson.type.PrimitiveType;
-
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
+import com.github.binarytojson.exception.UnsupportedTypeException;
+import com.github.binarytojson.type.PrimitiveType;
+import org.junit.jupiter.api.Test;
 
 class FixedBinaryReaderTest {
 
@@ -85,7 +84,7 @@ class FixedBinaryReaderTest {
         PrimitiveType type = mock(PrimitiveType.class);
 
         when(type.getDigitsCount()).thenReturn(16);
-        int controlLen = reader.readValue(new byte[]{0x01, 0x02}, type).length();
+        int controlLen = reader.readValue(new byte[] {0x01, 0x02}, type).length();
 
         // For 16 bits, control length should be 2 bytes
         // "258" has 3 characters
@@ -98,7 +97,7 @@ class FixedBinaryReaderTest {
         PrimitiveType type = mock(PrimitiveType.class);
 
         when(type.getDigitsCount()).thenReturn(32);
-        String result = reader.readValue(new byte[]{0x00, 0x00, 0x01, 0x00}, type);
+        String result = reader.readValue(new byte[] {0x00, 0x00, 0x01, 0x00}, type);
 
         // 0x00000100 == 256 in decimal
         assertEquals("256", result);
@@ -108,7 +107,8 @@ class FixedBinaryReaderTest {
     void testReadValueValidInput() {
         FixedBinaryReader reader = new FixedBinaryReader();
         byte[] bytes = {0x01, 0x02}; // 16 bits = 2 bytes
-        PrimitiveType type = PrimitiveType.builder().name("FIXED BINARY").signed(false).digitsCount(16).build();
+        PrimitiveType type =
+                PrimitiveType.builder().name("FIXED BINARY").signed(false).digitsCount(16).build();
         String expected = "258"; // (0x01 * 256) + 0x02 = 258
         assertEquals(expected, reader.readValue(bytes, type));
     }
@@ -117,8 +117,8 @@ class FixedBinaryReaderTest {
     void testReadValueValidInput32() {
         FixedBinaryReader reader = new FixedBinaryReader();
         byte[] bytes = {0x01, 0x02, 0, 0}; // 32 bits = 4 bytes
-        PrimitiveType type = PrimitiveType.builder()
-                .name("FIXED BINARY").signed(false).digitsCount(32).build();
+        PrimitiveType type =
+                PrimitiveType.builder().name("FIXED BINARY").signed(false).digitsCount(32).build();
         String expected = "16908288"; // (0x01 * 256 * 65536) + 0x02 = 16908288
         assertEquals(expected, reader.readValue(bytes, type));
     }
@@ -127,8 +127,8 @@ class FixedBinaryReaderTest {
     void testReadValueValidInput32Bits() {
         FixedBinaryReader reader = new FixedBinaryReader();
         byte[] bytes = {0x01, 0x02, 0, 0}; // 32 bits = 4 bytes
-        PrimitiveType type = PrimitiveType.builder()
-                .name("FIXED BINARY").signed(false).digitsCount(32).build();
+        PrimitiveType type =
+                PrimitiveType.builder().name("FIXED BINARY").signed(false).digitsCount(32).build();
         String expected = "16908288"; // (0x01 * 256 * 65536) + 0x02 = 16908288
         assertEquals(expected, reader.readValue(bytes, type));
     }
@@ -136,10 +136,18 @@ class FixedBinaryReaderTest {
     @Test
     void testReadValueValidInput63MinValue() {
         FixedBinaryReader reader = new FixedBinaryReader();
-        byte[] bytes = {(byte) 0xBF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF,
-                (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF};
-        PrimitiveType type = PrimitiveType.builder()
-                .name("FIXED BINARY").signed(true).digitsCount(64).build();
+        byte[] bytes = {
+            (byte) 0xBF,
+            (byte) 0xFF,
+            (byte) 0xFF,
+            (byte) 0xFF,
+            (byte) 0xFF,
+            (byte) 0xFF,
+            (byte) 0xFF,
+            (byte) 0xFF
+        };
+        PrimitiveType type =
+                PrimitiveType.builder().name("FIXED BINARY").signed(true).digitsCount(64).build();
         String expected = "-4611686018427387903";
         assertEquals(expected, reader.readValue(bytes, type));
     }
@@ -147,10 +155,18 @@ class FixedBinaryReaderTest {
     @Test
     void testReadValueValidInput63MaxValue() {
         FixedBinaryReader reader = new FixedBinaryReader();
-        byte[] bytes = {(byte) 0x3F, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF,
-                (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF};
-        PrimitiveType type = PrimitiveType.builder()
-                .name("FIXED BINARY").signed(false).digitsCount(64).build();
+        byte[] bytes = {
+            (byte) 0x3F,
+            (byte) 0xFF,
+            (byte) 0xFF,
+            (byte) 0xFF,
+            (byte) 0xFF,
+            (byte) 0xFF,
+            (byte) 0xFF,
+            (byte) 0xFF
+        };
+        PrimitiveType type =
+                PrimitiveType.builder().name("FIXED BINARY").signed(false).digitsCount(64).build();
         String expected = "4611686018427387903";
         assertEquals(expected, reader.readValue(bytes, type));
     }
@@ -159,8 +175,8 @@ class FixedBinaryReaderTest {
     void testReadValue_SignedInput() {
         FixedBinaryReader reader = new FixedBinaryReader();
         byte[] bytes = {(byte) 0xFF, 0x7F}; // Signed input -32639
-        PrimitiveType type = PrimitiveType.builder()
-                .name("FIXED BINARY").signed(true).digitsCount(16).build();
+        PrimitiveType type =
+                PrimitiveType.builder().name("FIXED BINARY").signed(true).digitsCount(16).build();
         String expected = "-32639";
         assertEquals(expected, reader.readValue(bytes, type));
     }
@@ -169,8 +185,8 @@ class FixedBinaryReaderTest {
     void testReadValue_InvalidInput() {
         FixedBinaryReader reader = new FixedBinaryReader();
         byte[] bytes = {0x01, 0x02, 0x03}; // Invalid, expected length 2 bytes for 16 bits
-        PrimitiveType type = PrimitiveType.builder()
-                .name("FIXED BINARY").signed(false).digitsCount(16).build();
+        PrimitiveType type =
+                PrimitiveType.builder().name("FIXED BINARY").signed(false).digitsCount(16).build();
         assertThrows(UnsupportedTypeException.class, () -> reader.readValue(bytes, type));
     }
 
@@ -178,10 +194,9 @@ class FixedBinaryReaderTest {
     void testReadValueZeroInput() {
         FixedBinaryReader reader = new FixedBinaryReader();
         byte[] bytes = {0x00, 0x00}; // 16 bits = 2 bytes
-        PrimitiveType type = PrimitiveType.builder()
-                .name("FIXED BINARY").signed(false).digitsCount(16).build();
+        PrimitiveType type =
+                PrimitiveType.builder().name("FIXED BINARY").signed(false).digitsCount(16).build();
         String expected = "0"; // Zero value
         assertEquals(expected, reader.readValue(bytes, type));
     }
-
 }

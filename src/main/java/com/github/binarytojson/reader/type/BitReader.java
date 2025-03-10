@@ -1,18 +1,19 @@
 package com.github.binarytojson.reader.type;
 
-import com.github.binarytojson.type.PrimitiveType;
-
 import static com.github.binarytojson.utils.Constants.MASK_FOR_DEFINE_BYTE;
 
+import com.github.binarytojson.type.PrimitiveType;
+
 /**
- * The BitReader class is responsible for reading bits from a list of bytes based on a specified PrimitiveType.
+ * The BitReader class is responsible for reading bits from a list of bytes based on a specified
+ * PrimitiveType.
  */
 public class BitReader implements TypeReader {
     /**
      * Reads and extracts the binary value from a list of bytes based on the provided PrimitiveType.
      *
      * @param bytes the list of integers representing bytes to read from
-     * @param type  the PrimitiveType specifying the start position and length of the bits to be read
+     * @param type the PrimitiveType specifying the start position and length of the bits to be read
      * @return a binary string representation of the extracted bits
      */
     @Override

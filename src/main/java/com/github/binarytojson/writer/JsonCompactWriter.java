@@ -2,12 +2,12 @@ package com.github.binarytojson.writer;
 
 import com.fasterxml.jackson.core.PrettyPrinter;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
-
 import java.io.IOException;
 import java.io.OutputStream;
 
 /**
- * The JsonCompactWriter class extends JsonWriter to provide functionality for writing data to a JSON format in a compact manner.
+ * The JsonCompactWriter class extends JsonWriter to provide functionality for writing data to a
+ * JSON format in a compact manner.
  */
 public class JsonCompactWriter extends JsonWriter {
 

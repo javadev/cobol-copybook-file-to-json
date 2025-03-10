@@ -2,24 +2,21 @@ package com.github.binarytojson.writer;
 
 import com.github.binarytojson.Mode;
 import com.github.binarytojson.reader.structure.StructureRecord;
-
 import java.io.Closeable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * The Writer interface defines methods for writing data to an output stream.
- */
+/** The Writer interface defines methods for writing data to an output stream. */
 public interface Writer extends Closeable {
 
     /**
      * Writes the header for the data structure.
      *
      * @param structureRecords the structure record describing the structure of the data
-     * @param mode             the mode in which to write the header
-     * @param rootName         the name of the root element
+     * @param mode the mode in which to write the header
+     * @param rootName the name of the root element
      */
     void writeHeader(List<StructureRecord> structureRecords, Mode mode, String rootName);
 
@@ -27,19 +24,15 @@ public interface Writer extends Closeable {
      * Writes an object of the data structure.
      *
      * @param structureRecords the structure record describing the structure of the data
-     * @param mode             the mode in which to write the object
-     * @param rootName         the name of the root element
+     * @param mode the mode in which to write the object
+     * @param rootName the name of the root element
      */
     void writeObject(List<StructureRecord> structureRecords, Mode mode, String rootName);
 
-    /**
-     * Writes the start of an array.
-     */
+    /** Writes the start of an array. */
     void writeStartArray();
 
-    /**
-     * Writes the end of an array.
-     */
+    /** Writes the end of an array. */
     void writeEndArray();
 
     /**
@@ -65,12 +58,13 @@ public interface Writer extends Closeable {
     /**
      * Merges a map entry into the result map based on the mode.
      *
-     * @param mode   the mode in which to merge duplicate keys
-     * @param entry  the map entry to merge
+     * @param mode the mode in which to merge duplicate keys
+     * @param entry the map entry to merge
      * @param result the result map to merge into
      */
     @SuppressWarnings("unchecked")
-    static void mergeMapEntry(Mode mode, Map.Entry<String, Object> entry, Map<String, Object> result) {
+    static void mergeMapEntry(
+            Mode mode, Map.Entry<String, Object> entry, Map<String, Object> result) {
         String key = entry.getKey();
         Object value = entry.getValue();
         if (result.containsKey(key)) {

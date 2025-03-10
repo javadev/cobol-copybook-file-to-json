@@ -1,13 +1,13 @@
 package com.github.binarytojson.reader.type;
 
-import com.github.binarytojson.type.PrimitiveType;
-
 import static com.github.binarytojson.utils.Constants.DOT;
 import static com.github.binarytojson.utils.Constants.MASK_FOR_DEFINE_HIGH_NIBBLE;
 import static com.github.binarytojson.utils.Constants.MASK_FOR_DEFINE_LOW_NIBBLE;
 import static com.github.binarytojson.utils.Constants.SHIFT_FOR_HIGH_NIBBLE;
 import static com.github.binarytojson.utils.Constants.SIGN_MINUS;
 import static com.github.binarytojson.utils.Constants.VALUE_MINUS;
+
+import com.github.binarytojson.type.PrimitiveType;
 
 public class FixedReader implements TypeReader {
 

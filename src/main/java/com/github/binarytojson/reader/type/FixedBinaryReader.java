@@ -1,12 +1,12 @@
 package com.github.binarytojson.reader.type;
 
-import com.github.binarytojson.exception.UnsupportedTypeException;
-import com.github.binarytojson.type.PrimitiveType;
-
 import static com.github.binarytojson.utils.Constants.MASK_FOR_DEFINE_BYTE;
 import static com.github.binarytojson.utils.Constants.MASK_WITHOUT_SIGN;
 import static com.github.binarytojson.utils.Constants.SIGN_DETECTION_MASK;
 import static com.github.binarytojson.utils.Constants.SIGN_MINUS;
+
+import com.github.binarytojson.exception.UnsupportedTypeException;
+import com.github.binarytojson.type.PrimitiveType;
 
 public class FixedBinaryReader implements TypeReader {
 
@@ -23,7 +23,8 @@ public class FixedBinaryReader implements TypeReader {
         int digitsCount = type.getDigitsCount();
         int controlLen = getControlLen(digitsCount);
         if (bytes.length != controlLen) {
-            throw new UnsupportedTypeException(String.format("Could not read var : %s", type.getName()));
+            throw new UnsupportedTypeException(
+                    String.format("Could not read var : %s", type.getName()));
         }
         long result = 0;
         String sign = "";

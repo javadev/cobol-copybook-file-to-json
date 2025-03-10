@@ -1,11 +1,10 @@
 package com.github.binarytojson.reader.type;
 
-import com.github.binarytojson.type.PrimitiveType;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import com.github.binarytojson.type.PrimitiveType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class FixedReaderTest {
 
@@ -60,8 +59,7 @@ class FixedReaderTest {
     void testReadValueSingleDigitWithScale() {
         // Representing 0
         byte[] bytes = {0x5};
-        PrimitiveType type = PrimitiveType.builder()
-                .digitsCount(1).scaleFactor(1).build();
+        PrimitiveType type = PrimitiveType.builder().digitsCount(1).scaleFactor(1).build();
         String result = fixedReader.readValue(bytes, type);
         assertEquals("0", result);
     }

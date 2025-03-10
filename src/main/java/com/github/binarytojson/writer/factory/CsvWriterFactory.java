@@ -2,12 +2,12 @@ package com.github.binarytojson.writer.factory;
 
 import com.github.binarytojson.writer.CsvWriter;
 import com.github.binarytojson.writer.Writer;
-
 import java.io.IOException;
 import java.io.OutputStream;
 
 /**
- * The CsvWriterFactory class implements the WriterFactory interface to create instances of CsvWriter.
+ * The CsvWriterFactory class implements the WriterFactory interface to create instances of
+ * CsvWriter.
  */
 public class CsvWriterFactory implements WriterFactory {
 
