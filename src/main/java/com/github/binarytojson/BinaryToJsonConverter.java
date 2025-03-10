@@ -23,7 +23,7 @@ import org.apache.commons.cli.ParseException;
 @Slf4j
 public class BinaryToJsonConverter {
     private static final String HEADER =
-            "Converts data from a binary file into a readable format such as CSV, JSON, or TXT.";
+            "Converts data from a cobol copybook file into a readable format such as CSV or JSON.";
     private static final String FOOTER = "\nKindly submit any issues to support.";
     private static final LayoutReader layoutReader = new LayoutReader();
     private static final EbcdicToAsciiConvertor ebcdicToAsciiConvertor =
